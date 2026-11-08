@@ -131,7 +131,7 @@ func isDigit(ch byte) bool {
 	return '0' <= ch && ch <= '9'
 }
 
-// explude from the lexer evaluations all the character usable as 'separator'
+// exclude from the lexer evaluations all the character usable as 'separator'
 func (l *Lexer) skipWhitespace() {
 	for l.ch == ' ' || l.ch == '\t' || l.ch == '\n' || l.ch == '\r' {
 		l.readChar()

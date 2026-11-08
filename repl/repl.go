@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"log"
 
 	"github.com/rubacodes/monkey/lexer"
 	"github.com/rubacodes/monkey/token"
@@ -17,6 +18,7 @@ func Start(in io.Reader, out io.Writer) {
 		fmt.Fprint(out, PROMPT)
 		scanned := scanner.Scan()
 		if !scanned {
+			log.Printf("error scanning input: %s", scanner.Err())
 			return
 		}
 		line := scanner.Text()
