@@ -19,9 +19,6 @@ func TestLetStatements(t *testing.T) {
 	program := p.ParseProgram()
 	checkParserError(t, p)
 	// inital structural checks, we have 3 correct statements, we expect 3 statement out
-	if program == nil {
-		t.Fatalf("Parse program retuned nil")
-	}
 	if len(program.Statements) != 3 {
 		t.Fatalf("Program statements doesn't contain 3 statement, got %d", len(program.Statements))
 	}
@@ -64,6 +61,35 @@ func testLetStatement(t *testing.T, s ast.Statement, name string) bool {
 		return false
 	}
 	return true
+}
+func TestReturnStatements(t *testing.T) {
+	input :=
+		`return 5;
+		 return 10;
+		 return 993322;
+		`
+	l := lexer.New(input)
+	p := New(l)
+
+	program := p.ParseProgram()
+	checkParserError(t, p)
+	// inital structural checks, we have 3 correct statements, we expect 3 statement out
+	if len(program.Statements) != 3 {
+		t.Fatalf("Program statements doesn't contain 3 statement, got %d", len(program.Statements))
+	}
+
+	//table Tests
+
+	for _, stmnt := range program.Statements {
+		returnStmt, ok := stmnt.(*ast.ReturnStatement)
+		if !ok {
+			t.Errorf("stmnt not a *ast.ReturnStatement, got=%T", stmnt)
+			continue
+		}
+		if returnStmt.TokenLiteral() != "return" {
+			t.Errorf("wrong returnStmt.TokenLiteral: want 'return', got=%s", returnStmt.TokenLiteral())
+		}
+	}
 }
 func checkParserError(t *testing.T, p *Parser) {
 	errors := p.Errors()
